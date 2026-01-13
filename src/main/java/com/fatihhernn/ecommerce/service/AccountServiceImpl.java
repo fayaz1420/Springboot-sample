@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account update(Long id, Account account) {
         if (!accountRepository.existsById(id)) {
-            throw new RuntimeException("Account not found with id: " + id);
+            throw new IllegalArgumentException("Account not found with id: " + id);
         }
         account.setId(id);
         return accountRepository.save(account);
@@ -49,6 +49,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteById(Long id) {
+        if (!accountRepository.existsById(id)) {
+            throw new IllegalArgumentException("Account not found with id: " + id);
+        }
         accountRepository.deleteById(id);
     }
 }

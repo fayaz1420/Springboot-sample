@@ -42,14 +42,18 @@ public class AccountRestController {
         try {
             Account updated = accountService.update(id, account);
             return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        accountService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            accountService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

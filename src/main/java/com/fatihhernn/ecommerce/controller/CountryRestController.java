@@ -26,6 +26,18 @@ public class CountryRestController {
 
     @PostMapping
     public ResponseEntity<Country> create(@RequestBody Country country) {
+        // Validate input
+        if (country.getCode() == null || country.getCode().trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (country.getName() == null || country.getName().trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        // Normalize code to uppercase
+        country.setCode(country.getCode().trim().toUpperCase());
+        country.setName(country.getName().trim());
+        
         Country saved = countryRepository.save(country);
         return ResponseEntity.created(URI.create("/api/countries/" + saved.getId())).body(saved);
     }

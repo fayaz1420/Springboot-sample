@@ -125,7 +125,10 @@ function AccountList() {
                         type="number"
                         step="0.01"
                         value={editForm.balance || 0}
-                        onChange={(e) => setEditForm({...editForm, balance: parseFloat(e.target.value)})}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          setEditForm({...editForm, balance: isNaN(value) ? 0 : value});
+                        }}
                       />
                     </td>
                     <td>
